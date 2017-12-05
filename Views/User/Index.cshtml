@@ -6,29 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
     @model loginRegistration.Models.RegisterUser
     <form asp-action="Register" asp-controller="User" method="post">
-        <span asp-validation-for="FirstName"></span>
+        <p><span asp-validation-for="FirstName"></span>
         <label asp-for="FirstName"></label>
-        <input asp-for="FirstName">
+        <input asp-for="FirstName"></p>
 
-        <span asp-validation-for="LastName"></span>
+        <p><span asp-validation-for="LastName"></span>
         <label asp-for="LastName"></label>
-        <input asp-for="LastName">
+        <input asp-for="LastName"></p>
 
-        <span asp-validation-for="EmailAddress"></span>
+        <p><span asp-validation-for="EmailAddress"></span>
         <label asp-for="EmailAddress"></label>
-        <input asp-for"EmailAddress">
+        <input asp-for"EmailAddress"></p>
 
-        <span asp-validation-for="Password"></span>
+        <p><span asp-validation-for="Password"></span>
         <label asp-for="Password"></label>
-        <input asp-for="Password">
+        <input asp-for="Password"></p>
 
-        <span asp-validation-for="ConfirmPassword"></span>
+        <p><span asp-validation-for="ConfirmPassword"></span>
         <label asp-for="ConfirmPassword"></label>
-        <input asp-for"ConfirmPaswword">
-
+        <input asp-for"ConfirmPaswword"></p>
+        
+        <p><input type="button" value="Register"></p>
 
     </form>
 </body>

@@ -10066,16 +10066,16 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\maggs\\desktop\\C#\\loginRegistration\\loginRegistration.csproj",
+      "projectUniqueName": "C:\\Users\\maggs\\desktop\\C#\\loginRegistration\\loginRegistration.csproj",
       "projectName": "loginRegistration",
-      "projectPath": "c:\\Users\\maggs\\desktop\\C#\\loginRegistration\\loginRegistration.csproj",
-      "outputPath": "c:\\Users\\maggs\\desktop\\C#\\loginRegistration\\obj\\",
+      "projectPath": "C:\\Users\\maggs\\desktop\\C#\\loginRegistration\\loginRegistration.csproj",
+      "outputPath": "C:\\Users\\maggs\\desktop\\C#\\loginRegistration\\obj\\",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp1.1"
       ],
       "files": {
-        "lib/netcoreapp1.1/loginRegistration.dll": "c:\\Users\\maggs\\desktop\\C#\\loginRegistration\\bin\\placeholder\\netcoreapp1.1\\loginRegistration.dll"
+        "lib/netcoreapp1.1/loginRegistration.dll": "C:\\Users\\maggs\\desktop\\C#\\loginRegistration\\bin\\placeholder\\netcoreapp1.1\\loginRegistration.dll"
       },
       "frameworks": {
         "netcoreapp1.1": {
