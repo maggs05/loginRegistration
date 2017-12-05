@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace loginRegistration.Models{
     public class RegisterUser{
         [Required]
-        [Display(Name ="First Name: ")]
+        [Display(Name="First Name: ")]
         [MinLength(2)]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage="First name can only contain letters!")]
         public string FirstName {get; set;}
