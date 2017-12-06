@@ -1,25 +1,36 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using DbConnection;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using loginRegistration.Models;
-// using Microsoft.AspNetCore.Identity;
-namespace loginRegistration.Controllers{
+using Microsoft.AspNetCore.Identity;
+namespace loginRegistration.Controllers
+{
     public class UserController: Controller{
-
+        private bool IsEmailUnique(string EmailAddress){
+            return DbConnector.Query($"Select id FROM users WHERE email='{EmailAddress}'").Count==0;
+        }
         [HttpGet]
         [Route("")]
-        public IActionResult Index(){
-    
+        public IActionResult Index(RegisterUser user){
+            if(!IsEmailUnique(user.EmailAddress)){
+                ModelState.AddModelError("email", "Email is already in use");
+
+            }
+            if(ModelState.IsValid){
+                PasswordHasher<RegisterUser>hasher= new PasswordHasher<RegisterUser>();
+                string hashedPass = hasher.HashPassword(user, user.Password);
+            }
              return View();
         }
         [HttpPost]
         [Route("submit")]
-        public IActionResult Register(RegisterUser user){
+        public IActionResult Register(RegisterUser model){
             if(ModelState.IsValid){
-                RegisterUser(user);
+
+
+
+                };
                 return RedirectToAction("Success");
+
             }
             return View("Index");
         }
