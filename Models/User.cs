@@ -1,4 +1,6 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace loginRegistration.Models{
     public class RegisterUser{
@@ -31,9 +33,18 @@ namespace loginRegistration.Models{
 
 
     } 
+
+    public class LoginUser{
+        [Required]
+        public string LogEmail {get; set;}
+
+        [Required]
+        public string LogPassword {get; set;}
+    }
     public class HomePageUsers
     {
+        public List<Dictionary<string,object>> Users {get;set;}
         public RegisterUser Register {get;set;}
-        // public LoginUser Login {get;set;}
+        public LoginUser Login {get;set;}
     }  
 }
