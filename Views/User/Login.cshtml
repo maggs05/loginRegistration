@@ -8,9 +8,13 @@
 </head>
 <body>  
     <form asp-action="Login" asp-controller="User" method="post">
-        <span asp-validation-for="Email"></span>
-        <label asp-for="Email"></label>
-        <input asp-for="Email" type="text">
+        <span asp-validation-for="LogEmail"></span>
+        <label asp-for="LogEmail"></label>
+        <input asp-for="LogEmail" type="text">
+
+        <span asp-validation-for="LogPassword"></span>
+        <label asp-for="LogPassword"></label>
+        <input asp-for="LogPassword">
 
     </form>
     

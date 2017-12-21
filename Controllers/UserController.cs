@@ -42,7 +42,7 @@ namespace loginRegistration.Controllers
                     newUser=user
                 });
             }
-             return View("Index");
+             return View("Index", GetUsers(null, user));
         }
 
         [HttpPost]
@@ -51,7 +51,7 @@ namespace loginRegistration.Controllers
             return RedirectToAction("Success");
                  if(IsEmailUnique(user.LogEmail))
             {
-                ModelState.AddModelError("log_email", "Invalid Email/Password");
+                ModelState.AddModelError("LogEmail", "Invalid Email/Password");
             }
             else
             {
@@ -63,7 +63,7 @@ namespace loginRegistration.Controllers
                 
                 if(hasher.VerifyHashedPassword(user, hashed, user.LogPassword) == 0)
                 {
-                    ModelState.AddModelError("log_email", "Invalid Email/Password");
+                    ModelState.AddModelError("LogEmail", "Invalid Email/Password");
                 }
 
             }

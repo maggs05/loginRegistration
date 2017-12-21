@@ -28,6 +28,7 @@ namespace loginRegistration.Models{
         public string Password {get; set;}
 
         [Display(Name="Confirm Password")]
+        [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Password and confirmation password must match!")]
         public string ConfirmPassword {get; set;}
 
@@ -36,9 +37,16 @@ namespace loginRegistration.Models{
 
     public class LoginUser{
         [Required]
+        [EmailAddress]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name="Email: ")]
         public string LogEmail {get; set;}
 
+        
         [Required]
+        [DataType(DataType.Password)]
+        [MinLength(8)]
+        [Display(Name="Password: ")]
         public string LogPassword {get; set;}
     }
     public class HomePageUsers
