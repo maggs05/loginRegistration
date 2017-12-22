@@ -24,12 +24,7 @@ namespace loginRegistration
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            app.UseMvc();
+            app.UseDeveloperExceptionPage();
             app.UseSession();
           
         }

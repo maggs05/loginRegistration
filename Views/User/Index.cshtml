@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-@model loginRegistration.Models.HomePageUsers
 
 <html lang="en">
 <head>
+
+    @model loginRegistration.Models.HomePageUsers
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -15,7 +17,7 @@
     @Html.Partial("Login", Model.LoginUser)
     @foreach(var user in Model.Users)
     {
-        <p>@user["Firstname"]</p>
+        <p>@user["FirstName"]</p>
     }
 </body>
 </html>

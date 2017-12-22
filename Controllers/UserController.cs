@@ -2,6 +2,7 @@ using DbConnection;
 using Microsoft.AspNetCore.Mvc;
 using loginRegistration.Models;
 using Microsoft.AspNetCore.Identity;
+
 namespace loginRegistration.Controllers
 {
     public class UserController: Controller{
@@ -21,7 +22,7 @@ namespace loginRegistration.Controllers
         [Route("")]
         public IActionResult Index(){
             
-            return View("Index");
+            return View(GetUsers());
         }
         [HttpPost]  
         [Route("Register")]
@@ -55,16 +56,14 @@ namespace loginRegistration.Controllers
             }
             else
             {
-                
                 string hashed = (string)DbConnector.Query($"SELECT password FROM users WHERE email='{user.LogEmail}'")[0]["password"];
-
                 PasswordHasher<LoginUser> hasher = new PasswordHasher<LoginUser>();
 
                 
-                if(hasher.VerifyHashedPassword(user, hashed, user.LogPassword) == 0)
-                {
-                    ModelState.AddModelError("LogEmail", "Invalid Email/Password");
-                }
+                    if(hasher.VerifyHashedPassword(user, hashed, user.LogPassword) == 0)
+                    {
+                        ModelState.AddModelError("LogEmail", "Invalid Email/Password");
+                    }
 
             }
 
