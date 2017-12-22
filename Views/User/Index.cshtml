@@ -13,7 +13,7 @@
 <body>
     <h1>Login and Register!</h1>
     <hr>
-    @Html.Partial("Registration", Model.RegisterUser)
+    @Html.Partial("Register", Model.RegisterUser)
     @Html.Partial("Login", Model.LoginUser)
     @foreach(var user in Model.Users)
     {

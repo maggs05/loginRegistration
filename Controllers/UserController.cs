@@ -1,21 +1,23 @@
+using System;
 using DbConnection;
 using Microsoft.AspNetCore.Mvc;
 using loginRegistration.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace loginRegistration.Controllers
 {
     public class UserController: Controller{
         private bool IsEmailUnique(string EmailAddress){
-            return DbConnector.Query($"Select id FROM users WHERE email='{EmailAddress}'").Count==0;
+            return DbConnector.Query($"Select id FROM users WHERE EmailAddress='{EmailAddress}'").Count==0;
         }
-        private HomePageUsers GetUsers(LoginUser logUser = null, RegisterUser regUser = null)
+        private HomePageUsers GetUsers(LoginUser LoginUser = null, RegisterUser RegisterUser = null)
         {
             return new HomePageUsers()
             {
                 Users = DbConnector.Query("SELECT * FROM users"),
-                Login = logUser == null ? new LoginUser() : logUser,
-                Register = regUser == null ? new RegisterUser() : regUser
+                LoginUser = LoginUser == null ? new LoginUser() : LoginUser,
+                RegisterUser = RegisterUser == null ? new RegisterUser() : RegisterUser
             };
         }
         [HttpGet]
@@ -28,7 +30,7 @@ namespace loginRegistration.Controllers
         [Route("Register")]
         public IActionResult Register(RegisterUser user){
             if(!IsEmailUnique(user.EmailAddress)){
-                ModelState.AddModelError("email", "Email is already in use");
+                ModelState.AddModelError("EmailAddress", "Email is already in use");
 
             }
             if(ModelState.IsValid){
@@ -47,16 +49,15 @@ namespace loginRegistration.Controllers
         }
 
         [HttpPost]
-        [Route("submit")]
+        [Route("login")]
         public IActionResult Login(LoginUser user){
-            return RedirectToAction("Success");
-                 if(IsEmailUnique(user.LogEmail))
+            if(IsEmailUnique(user.LogEmail))
             {
                 ModelState.AddModelError("LogEmail", "Invalid Email/Password");
             }
             else
             {
-                string hashed = (string)DbConnector.Query($"SELECT password FROM users WHERE email='{user.LogEmail}'")[0]["password"];
+                string hashed = (string)DbConnector.Query($"SELECT password FROM users WHERE EmailAddress='{user.LogEmail}'")[0]["password"];
                 PasswordHasher<LoginUser> hasher = new PasswordHasher<LoginUser>();
 
                 

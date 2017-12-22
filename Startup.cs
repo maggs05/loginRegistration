@@ -26,6 +26,7 @@ namespace loginRegistration
             loggerFactory.AddConsole();
             app.UseDeveloperExceptionPage();
             app.UseSession();
+            app.UseMvc();
           
         }
     }

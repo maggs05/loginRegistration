@@ -52,7 +52,7 @@ namespace loginRegistration.Models{
     public class HomePageUsers
     {
         public List<Dictionary<string,object>> Users {get;set;}
-        public RegisterUser Register {get;set;}
-        public LoginUser Login {get;set;}
+        public RegisterUser RegisterUser {get;set;}
+        public LoginUser LoginUser {get;set;}
     }  
 }
