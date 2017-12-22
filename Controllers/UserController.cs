@@ -37,7 +37,7 @@ namespace loginRegistration.Controllers
                 PasswordHasher<RegisterUser>hasher= new PasswordHasher<RegisterUser>();
                 string hashedPass = hasher.HashPassword(user, user.Password);
 
-                string query= $@"INSERT INTO users (FirstName, LastName, EmailAddress, Password, created_at, updated_at) VALUES('{user.FirstName}','{user.LastName}','{user.EmailAddress}','{hashedPass}',NOW(),NOW()";
+                string query= $@"INSERT INTO users (FirstName, LastName, EmailAddress, Password, created_at, updated_at) VALUES ('{user.FirstName}','{user.LastName}','{user.EmailAddress}','{hashedPass}',NOW(),NOW())";
 
                 DbConnector.Execute(query);
                 return Json(new{
@@ -50,7 +50,8 @@ namespace loginRegistration.Controllers
 
         [HttpPost]
         [Route("login")]
-        public IActionResult Login(LoginUser user){
+        public IActionResult Login(LoginUser user)
+        {
             if(IsEmailUnique(user.LogEmail))
             {
                 ModelState.AddModelError("LogEmail", "Invalid Email/Password");
