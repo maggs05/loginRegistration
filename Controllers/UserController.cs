@@ -37,7 +37,7 @@ namespace loginRegistration.Controllers
                 PasswordHasher<RegisterUser>hasher= new PasswordHasher<RegisterUser>();
                 string hashedPass = hasher.HashPassword(user, user.Password);
 
-                string query= $@"INSERT INTO users (FirstName, LastName, EmailAddress, Password, created_at, updated_at) VALUES ('{user.FirstName}','{user.LastName}','{user.EmailAddress}','{hashedPass}',NOW(),NOW())";
+                string query= $"INSERT INTO users (FirstName, LastName, EmailAddress, Password, created_at, updated_at) VALUES ('{user.FirstName}','{user.LastName}','{user.EmailAddress}','{hashedPass}',NOW(),NOW())";
 
                 DbConnector.Execute(query);
                 return Json(new{
@@ -49,22 +49,21 @@ namespace loginRegistration.Controllers
         }
 
         [HttpPost]
-        [Route("login")]
+        [Route("Login")]
         public IActionResult Login(LoginUser user)
         {
             if(IsEmailUnique(user.LogEmail))
             {
-                ModelState.AddModelError("LogEmail", "Invalid Email/Password");
+                ModelState.AddModelError("LogEmail","Invalid Email/Password");
             }
             else
             {
-                string hashed = (string)DbConnector.Query($"SELECT password FROM users WHERE EmailAddress='{user.LogEmail}'")[0]["password"];
+                string hashed = (string)DbConnector.Query($"SELECT Password FROM users WHERE EmailAddress='{user.LogEmail}'")[0]["Password"];
                 PasswordHasher<LoginUser> hasher = new PasswordHasher<LoginUser>();
-
-                
-                    if(hasher.VerifyHashedPassword(user, hashed, user.LogPassword) == 0)
+                    if(0 == hasher.VerifyHashedPassword(user,hashed,user.LogPassword))                
+                    // if(hasher.VerifyHashedPassword(user, hashed, user.LogPassword) != 0)
                     {
-                        ModelState.AddModelError("LogEmail", "Invalid Email/Password");
+                        ModelState.AddModelError("LogEmail","Invalid Email/Password");
                     }
 
             }
