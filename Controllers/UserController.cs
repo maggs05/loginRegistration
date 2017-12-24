@@ -1,13 +1,17 @@
-using System;
 using DbConnection;
 using Microsoft.AspNetCore.Mvc;
 using loginRegistration.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
 
 namespace loginRegistration.Controllers
 {
     public class UserController: Controller{
+        private LoginRegContext _context;
+ 
+        public UserController(LoginRegContext context)
+    {
+        _context = context;
+    }
         private bool IsEmailUnique(string EmailAddress){
             return DbConnector.Query($"Select id FROM users WHERE EmailAddress='{EmailAddress}'").Count==0;
         }
@@ -60,8 +64,8 @@ namespace loginRegistration.Controllers
             {
                 string hashed = (string)DbConnector.Query($"SELECT Password FROM users WHERE EmailAddress='{user.LogEmail}'")[0]["Password"];
                 PasswordHasher<LoginUser> hasher = new PasswordHasher<LoginUser>();
-                    if(0 == hasher.VerifyHashedPassword(user,hashed,user.LogPassword))                
-                    // if(hasher.VerifyHashedPassword(user, hashed, user.LogPassword) != 0)
+                    // if(0 == hasher.VerifyHashedPassword(user,hashed,user.LogPassword))                
+                    if(hasher.VerifyHashedPassword(user, hashed, user.LogPassword) == 0)
                     {
                         ModelState.AddModelError("LogEmail","Invalid Email/Password");
                     }
