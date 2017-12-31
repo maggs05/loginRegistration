@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 
-    @model loginRegistration.Models.HomePageUsers
+    @model loginRegistration.Models.User
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +13,8 @@
 <body>
     <h1>Login and Register!</h1>
     <hr>
-    @Html.Partial("Register", Model.RegisterUser)
-    @Html.Partial("Login", Model.LoginUser)
-    @foreach(var user in Model.Users)
-    {
-        <p>@user["FirstName"]</p>
-    }
+    @Html.Partial("Register")
+    @Html.Partial("Login")
+    
 </body>
 </html>

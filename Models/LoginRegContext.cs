@@ -6,7 +6,7 @@ namespace loginRegistration.Models
     {
         public LoginRegContext(DbContextOptions<LoginRegContext> options) : base(options) { }
 
-        public DbSet<HomePageUsers>users{get;set;}
+        public DbSet<User>users{get;set;}
         
     }
 }

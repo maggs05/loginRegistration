@@ -1,9 +1,12 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
 
 namespace loginRegistration.Models{
-    public class RegisterUser{
+    public class User{
+        [Key]
+        public long id {get; set;}
+        
         [Required]
         [Display(Name="First Name:")]
         [MinLength(2)]
@@ -31,6 +34,13 @@ namespace loginRegistration.Models{
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Password and confirmation password must match!")]
         public string ConfirmPassword {get; set;}
+        public DateTime created_at{get;set;}
+        public DateTime updated_at{get; set;}
+
+    public User(){
+        created_at=DateTime.Now;
+        updated_at=DateTime.Now;
+    }
 
 
     } 
@@ -49,10 +59,5 @@ namespace loginRegistration.Models{
         [Display(Name="Password: ")]
         public string LogPassword {get; set;}
     }
-    public class HomePageUsers
-    {
-        public List<Dictionary<string,object>> Users {get;set;}
-        public RegisterUser RegisterUser {get;set;}
-        public LoginUser LoginUser {get;set;}
-    }  
+    
 }

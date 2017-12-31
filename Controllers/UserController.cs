@@ -1,7 +1,9 @@
-using DbConnection;
 using Microsoft.AspNetCore.Mvc;
 using loginRegistration.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace loginRegistration.Controllers
 {
@@ -12,76 +14,59 @@ namespace loginRegistration.Controllers
     {
         _context = context;
     }
-        private bool IsEmailUnique(string EmailAddress){
-            return DbConnector.Query($"Select id FROM users WHERE EmailAddress='{EmailAddress}'").Count==0;
-        }
-        private HomePageUsers GetUsers(LoginUser LoginUser = null, RegisterUser RegisterUser = null)
-        {
-            return new HomePageUsers()
-            {
-                Users = DbConnector.Query("SELECT * FROM users"),
-                LoginUser = LoginUser == null ? new LoginUser() : LoginUser,
-                RegisterUser = RegisterUser == null ? new RegisterUser() : RegisterUser
-            };
-        }
+      
         [HttpGet]
         [Route("")]
         public IActionResult Index(){
             
-            return View(GetUsers());
+            return View();
         }
-        [HttpPost]  
-        [Route("Register")]
-        public IActionResult Register(RegisterUser user){
-            if(!IsEmailUnique(user.EmailAddress)){
-                ModelState.AddModelError("EmailAddress", "Email is already in use");
-
+        [HttpPost]
+        [Route("Create")] 
+        public IActionResult Create(User user){
+            if(_context.users.Where(u=>u.EmailAddress==user.EmailAddress).ToList().Count()>0){
+                ModelState.AddModelError("EmailAddress","Email already exists!");
+            return View("Index");
             }
+            
             if(ModelState.IsValid){
-                PasswordHasher<RegisterUser>hasher= new PasswordHasher<RegisterUser>();
-                string hashedPass = hasher.HashPassword(user, user.Password);
+            PasswordHasher<User>hasher=new PasswordHasher<User>();
+            user.Password=hasher.HashPassword(user,user.Password);
+            _context.users.Add(user);
+            _context.SaveChanges();
 
-                string query= $"INSERT INTO users (FirstName, LastName, EmailAddress, Password, created_at, updated_at) VALUES ('{user.FirstName}','{user.LastName}','{user.EmailAddress}','{hashedPass}',NOW(),NOW())";
-
-                DbConnector.Execute(query);
-                return Json(new{
-                    success=true,
-                    newUser=user
-                });
+            return Json(user);
             }
-             return View("Index", GetUsers(null, user));
-        }
-
+        return View("Index");
+        }      
         [HttpPost]
         [Route("Login")]
         public IActionResult Login(LoginUser user)
         {
-            if(IsEmailUnique(user.LogEmail))
-            {
-                ModelState.AddModelError("LogEmail","Invalid Email/Password");
+            if(_context.users.Where(u=>u.EmailAddress==user.LogEmail).ToList().Count()==0){
+                ModelState.AddModelError("LogEmail", "Invalid Email/Password");
+            
             }
-            else
-            {
-                string hashed = (string)DbConnector.Query($"SELECT Password FROM users WHERE EmailAddress='{user.LogEmail}'")[0]["Password"];
-                PasswordHasher<LoginUser> hasher = new PasswordHasher<LoginUser>();
-                    // if(0 == hasher.VerifyHashedPassword(user,hashed,user.LogPassword))                
-                    if(hasher.VerifyHashedPassword(user, hashed, user.LogPassword) == 0)
-                    {
-                        ModelState.AddModelError("LogEmail","Invalid Email/Password");
-                    }
+            else{
+                User ToCheck=_context.users.SingleOrDefault(u=>u.EmailAddress==user.LogEmail);
+
+                PasswordHasher<LoginUser>hasher= new PasswordHasher<LoginUser>();
+                if(hasher.VerifyHashedPassword(user,ToCheck.Password,user.LogPassword)==0){
+                    ModelState.AddModelError("LogEmail","Invalid Email/Password");
+                }
+            }
+                if(ModelState.IsValid){
+                     User ToLog=_context.users.SingleOrDefault(u=>u.EmailAddress==user.LogEmail);
+                    HttpContext.Session.SetInt32("id",(int)ToLog.id);
+                    return Json(user);
+                }
+                return View("Index");
 
             }
-
-            if(ModelState.IsValid)
-            {
-                return Json(new {
-                    success=true,
-                    newUser=user
-                });
-            }
-            return View("Index", GetUsers(user, null));
-        }
+        }               
     }
-}
+           
+              
+
 
         
