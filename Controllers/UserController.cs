@@ -12,6 +12,7 @@ namespace loginRegistration.Controllers
  
         public UserController(LoginRegContext context)
     {
+        
         _context = context;
     }
       
