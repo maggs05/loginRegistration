@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MySQL.Data.EntityFrameworkCore.Extensions;
+using Pomelo.EntityFrameworkCore.MySql;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace loginRegistration
@@ -20,7 +21,7 @@ namespace loginRegistration
     
         }
         public void ConfigureServices(IServiceCollection services){
-            services.AddDbContext<LoginRegContext>(options => options.UseMySQL(Configuration["DbInfo:ConnectionString"]));
+            services.AddDbContext<LoginRegContext>(options => options.UseMySql(Configuration["DbInfo:ConnectionString"]));
             services.AddMvc();
             services.AddSession();
             

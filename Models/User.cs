@@ -5,7 +5,7 @@
 namespace loginRegistration.Models{
     public class User{
         [Key]
-        public long id {get; set;}
+        public long User_Id {get; set;}
         
         [Required]
         [Display(Name="First Name:")]
@@ -30,21 +30,20 @@ namespace loginRegistration.Models{
         [DataType(DataType.Password)]
         public string Password {get; set;}
 
+        public DateTime created_at{get;set;}
+        public DateTime updated_at{get; set;}  
+
+        public User(){
+            created_at=DateTime.Now;
+            updated_at=DateTime.Now;
+        }
+    } 
+    public class NewUser : User{
         [Display(Name="Confirm Password")]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Password and confirmation password must match!")]
         public string ConfirmPassword {get; set;}
-        public DateTime created_at{get;set;}
-        public DateTime updated_at{get; set;}
-
-    public User(){
-        created_at=DateTime.Now;
-        updated_at=DateTime.Now;
     }
-
-
-    } 
-
     public class LoginUser{
         [Required]
         [EmailAddress]
@@ -58,6 +57,6 @@ namespace loginRegistration.Models{
         [MinLength(8)]
         [Display(Name="Password: ")]
         public string LogPassword {get; set;}
+        }
     }
     
-}

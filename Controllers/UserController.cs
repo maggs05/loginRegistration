@@ -24,7 +24,7 @@ namespace loginRegistration.Controllers
         }
         [HttpPost]
         [Route("Create")] 
-        public IActionResult Create(User user){
+        public IActionResult Create(NewUser user){
             if(_context.users.Where(u=>u.EmailAddress==user.EmailAddress).ToList().Count()>0){
                 ModelState.AddModelError("EmailAddress","Email already exists!");
             return View("Index");
@@ -50,7 +50,6 @@ namespace loginRegistration.Controllers
             }
             else{
                 User ToCheck=_context.users.SingleOrDefault(u=>u.EmailAddress==user.LogEmail);
-
                 PasswordHasher<LoginUser>hasher= new PasswordHasher<LoginUser>();
                 if(hasher.VerifyHashedPassword(user,ToCheck.Password,user.LogPassword)==0){
                     ModelState.AddModelError("LogEmail","Invalid Email/Password");
@@ -58,7 +57,7 @@ namespace loginRegistration.Controllers
             }
                 if(ModelState.IsValid){
                      User ToLog=_context.users.SingleOrDefault(u=>u.EmailAddress==user.LogEmail);
-                    HttpContext.Session.SetInt32("id",(int)ToLog.id);
+                    HttpContext.Session.SetInt32("id",(int)ToLog.User_Id);
                     return Json(user);
                 }
                 return View("Index");
