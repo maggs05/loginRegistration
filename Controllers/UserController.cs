@@ -33,9 +33,17 @@ namespace loginRegistration.Controllers
             if(ModelState.IsValid){
             PasswordHasher<User>hasher=new PasswordHasher<User>();
             user.Password=hasher.HashPassword(user,user.Password);
-            _context.users.Add(user);
+
+            User ToCreate = new User(){
+                FirstName=user.FirstName,
+                LastName=user.LastName,
+                EmailAddress=user.EmailAddress,
+                Password=hasher.HashPassword(user, user.Password)
+            };
+            _context.users.Add(ToCreate);
             _context.SaveChanges();
 
+            HttpContext.Session.SetInt32("id", (int)ToCreate.User_Id);
             return Json(user);
             }
         return View("Index");
@@ -44,21 +52,23 @@ namespace loginRegistration.Controllers
         [Route("Login")]
         public IActionResult Login(LoginUser user)
         {
-            if(_context.users.Where(u=>u.EmailAddress==user.LogEmail).ToList().Count()==0){
+            if(_context.users.Where(u=>u.EmailAddress==user.LogEmail).ToList().Count()==0)
+                {
                 ModelState.AddModelError("LogEmail", "Invalid Email/Password");
             
             }
             else{
-                User ToCheck=_context.users.SingleOrDefault(u=>u.EmailAddress==user.LogEmail);
+                User ToCheck=_context.users.FirstOrDefault(u=>u.EmailAddress==user.LogEmail);
                 PasswordHasher<LoginUser>hasher= new PasswordHasher<LoginUser>();
-                if(hasher.VerifyHashedPassword(user,ToCheck.Password,user.LogPassword)==0){
-                    ModelState.AddModelError("LogEmail","Invalid Email/Password");
+                if(hasher.VerifyHashedPassword(user, ToCheck.Password, user.LogPassword)==0){
+                    ModelState.AddModelError("LogEmail", "Invalid Email/Password");
                 }
             }
                 if(ModelState.IsValid){
                      User ToLog=_context.users.SingleOrDefault(u=>u.EmailAddress==user.LogEmail);
                     HttpContext.Session.SetInt32("id",(int)ToLog.User_Id);
-                    return Json(user);
+                    
+                    return Json(user);                 
                 }
                 return View("Index");
 
